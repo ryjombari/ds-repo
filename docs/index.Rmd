@@ -36,6 +36,64 @@ g + geom_point(aes(color=class))
 g + geom_point(aes(shape=class))
 ```
 
+```{r size}
+g + geom_point(aes(size=class))
+```
+
+
+```{r mult_geoms}
+ggplot(data = mpg, aes(x = displ, y = hwy)) + 
+  geom_point() +
+  geom_smooth()
+```
+
+## data wrangling with `dplyr`
+
+```{r}
+library(tidyverse)
+gapminder <- readr::read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder.csv")
+gapminder
+```
+
+## useful functions to get to know your data
+head(gapminder) # show first 6 rows, can specify: , n
+tail(gapminder) # last 6
+
+## check structure of data
+str(gapminder)
+
+## variable names and data dimensions
+names(gapminder)
+dim(gapminder)
+ncol(gapminder)
+
+## combine
+c(nrow(gapminder),ncol(gapminder))
+
+summary(gapminder)
+
+## for everthing above, operating on whole data set.  
+
+head(gapminder$lifeExp)
+
+## work with dplyr
+
+```{r}
+
+filter(gapminder, lifeExp < 29)
+
+d <- filter(gapminder, country == "Sweden")
+mean(d$lifeExp)
+mean(filter(gapminder, country == "Sweden")$lifeExp)
+
+## pipe operator  `%>%` 
+gapminder %>% head(10)
+gapminder %>% 
+  filter(country == "Sweden") %>% 
+  summarize(mean_lifeExp = mean(lifeExp))
+
+```
+
 ## Including Plots
 
 You can also embed plots, for example:
