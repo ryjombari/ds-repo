@@ -1,0 +1,30 @@
+---
+title: "stattest"
+author: "John Ryan"
+date: "11/30/2017"
+output: html_document
+---
+
+```{r}
+S <- readr::read_csv(file="/Users/ryjo/MARS/allsonglengths.csv")
+hist(S$songlength, breaks = 25)
+shapiro.test(S$songlength)
+```
+
+Subset to exclude January.
+```{r}
+S <- readr::read_csv(file="/Users/ryjo/MARS/allsonglengths_noJan.csv")
+hist(S$songlength, breaks = 25)
+shapiro.test(S$songlength)
+```
+
+Subset to exclude > 14 minute songs.
+```{r}
+S <- readr::read_csv(file="/Users/ryjo/MARS/allsonglengths_lt14.csv")
+hist(S$songlength, breaks = 25)
+shapiro.test(S$songlength)
+```
+
+
+
+
