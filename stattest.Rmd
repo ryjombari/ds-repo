@@ -26,5 +26,28 @@ shapiro.test(S$songlength)
 ```
 
 
+Run wilcox.test on all sequential months
 
+Load all
 
+```{r}
+S201510 <- readr::read_csv(file="/Users/ryjo/MARS/SL_2015_10.csv")
+S201511 <- readr::read_csv(file="/Users/ryjo/MARS/SL_2015_11.csv")
+S201512 <- readr::read_csv(file="/Users/ryjo/MARS/SL_2015_12.csv")
+S201601 <- readr::read_csv(file="/Users/ryjo/MARS/SL_2016_01.csv")
+S201609 <- readr::read_csv(file="/Users/ryjo/MARS/SL_2016_09.csv")
+S201610 <- readr::read_csv(file="/Users/ryjo/MARS/SL_2016_10.csv")
+S201611 <- readr::read_csv(file="/Users/ryjo/MARS/SL_2016_11.csv")
+S201612 <- readr::read_csv(file="/Users/ryjo/MARS/SL_2016_12.csv")
+S201701 <- readr::read_csv(file="/Users/ryjo/MARS/SL_2017_01.csv")
+```
+
+```{r}
+wilcox.test(S201510$length, S201511$length)
+wilcox.test(S201511$length, S201512$length)
+wilcox.test(S201512$length, S201601$length)
+wilcox.test(S201609$length, S201610$length)
+wilcox.test(S201610$length, S201611$length)
+wilcox.test(S201611$length, S201612$length)
+wilcox.test(S201612$length, S201701$length)
+```

@@ -170,6 +170,104 @@ $(document).ready(function () {
 ## 
 ## data:  S$songlength
 ## W = 0.98224, p-value = 6.623e-05</code></pre>
+<p>Run wilcox.test on all sequential months</p>
+<p>Load all</p>
+<pre class="r"><code>S201510 &lt;- readr::read_csv(file=&quot;/Users/ryjo/MARS/SL_2015_10.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   length = col_double()
+## )</code></pre>
+<pre class="r"><code>S201511 &lt;- readr::read_csv(file=&quot;/Users/ryjo/MARS/SL_2015_11.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   length = col_double()
+## )</code></pre>
+<pre class="r"><code>S201512 &lt;- readr::read_csv(file=&quot;/Users/ryjo/MARS/SL_2015_12.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   length = col_double()
+## )</code></pre>
+<pre class="r"><code>S201601 &lt;- readr::read_csv(file=&quot;/Users/ryjo/MARS/SL_2016_01.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   length = col_double()
+## )</code></pre>
+<pre class="r"><code>S201609 &lt;- readr::read_csv(file=&quot;/Users/ryjo/MARS/SL_2016_09.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   length = col_double()
+## )</code></pre>
+<pre class="r"><code>S201610 &lt;- readr::read_csv(file=&quot;/Users/ryjo/MARS/SL_2016_10.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   length = col_double()
+## )</code></pre>
+<pre class="r"><code>S201611 &lt;- readr::read_csv(file=&quot;/Users/ryjo/MARS/SL_2016_11.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   length = col_double()
+## )</code></pre>
+<pre class="r"><code>S201612 &lt;- readr::read_csv(file=&quot;/Users/ryjo/MARS/SL_2016_12.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   length = col_double()
+## )</code></pre>
+<pre class="r"><code>S201701 &lt;- readr::read_csv(file=&quot;/Users/ryjo/MARS/SL_2017_01.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   length = col_double()
+## )</code></pre>
+<pre class="r"><code>wilcox.test(S201510$length, S201511$length)</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  S201510$length and S201511$length
+## W = 848, p-value = 2.371e-06
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<pre class="r"><code>wilcox.test(S201511$length, S201512$length)</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  S201511$length and S201512$length
+## W = 595, p-value = 6.312e-09
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<pre class="r"><code>wilcox.test(S201512$length, S201601$length)</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  S201512$length and S201601$length
+## W = 621, p-value = 0.001323
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<pre class="r"><code>wilcox.test(S201609$length, S201610$length)</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test
+## 
+## data:  S201609$length and S201610$length
+## W = 37, p-value = 0.1093
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<pre class="r"><code>wilcox.test(S201610$length, S201611$length)</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  S201610$length and S201611$length
+## W = 204, p-value = 0.00494
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<pre class="r"><code>wilcox.test(S201611$length, S201612$length)</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  S201611$length and S201612$length
+## W = 856, p-value = 0.05713
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<pre class="r"><code>wilcox.test(S201612$length, S201701$length)</code></pre>
+<pre><code>## Warning in wilcox.test.default(S201612$length, S201701$length): cannot
+## compute exact p-value with ties</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  S201612$length and S201701$length
+## W = 441, p-value = 0.02243
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
 
 
 
