@@ -94,6 +94,44 @@ gapminder %>%
 
 ```
 
+## select a subset of columns
+```{r}
+select(gapminder, year, lifeExp)
+
+gapminder %>%
+  select(year, lifeExp) %>%
+  tail()
+
+## combine what we've learned
+gapminder %>%
+  filter(country == "Cambodia") %>%
+  select(country, year, pop, gdpPercap)
+
+## simpler
+gapminder %>%
+  filter(country == "Cambodia") %>%
+  select(-continent, -lifeExp)
+
+gapminder %>%
+  filter(country == "Mexico",
+         year == 2002)
+
+## mutate to add columns
+gapminder %>%
+  mutate(gdp = pop * gdpPercap)
+
+## add an index
+gapminder %>%
+  mutate(index = 1:nrow(gapminder)) %>%
+  tail()
+
+gapminder %>% 
+  group_by(country) %>%
+  summarize(max_gdpPercap = max(gdpPercap))
+
+```
+
+
 ## Including Plots
 
 You can also embed plots, for example:
