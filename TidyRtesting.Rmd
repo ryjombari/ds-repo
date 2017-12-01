@@ -1,0 +1,66 @@
+---
+title: "TidyRtesting"
+author: "John Ryan"
+date: "12/1/2017"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(tidyr)
+```
+
+## Example datsets
+
+## command option i to insert new R block
+```{r}
+AirPassengers
+```
+
+```{r}
+## wide format
+gap_wide <- readr::read_csv('https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder_wide.csv')
+
+
+## yesterdays data format
+gapminder <- readr::read_csv('https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder.csv')
+
+head(gap_wide)
+
+## Use gather to turn `gap_wide` into long format dataset
+gap_long <- gap_wide %>%
+  gather(key = obstype_year,
+         value = obs_values,
+         dplyr::starts_with('pop'),
+         dplyr::starts_with("lifeExp"),
+         dplyr::starts_with("gdpPercap"))
+```
+
+## separate out the year
+```{r}
+gap_long <- gap_wide %>%
+  gather(key = obstype_year,
+         value = obs_values,
+         -continent, - country) %>%
+  separate(obstype_year,
+           into = c("obs_type", "year"),
+           sep = "_",
+           convert = T)
+
+head(gap_long)
+
+```
+
+## plot long format data
+```{r}
+life_df <- gap_long %>%
+  filter(obs_type == "lifeExp",
+         continent == "Americas")
+head(life_df)
+
+ggplot(data = life_df, aes(x = year, y = obs_values, color = country)) +
+  geom_line()
+```
+
+
+
