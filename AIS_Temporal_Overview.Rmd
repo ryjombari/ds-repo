@@ -1,0 +1,98 @@
+---
+title: "AIS data temporal overview"
+author: "John Ryan, MBARI"
+date: "July 2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### R Markdown
+
+*Note from RStudio*: This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.  When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+*Note from John*: When you **Knit** the R Markdown file, processing occurs, but the R Studio Environment does not hold the variables for you to examine and test (somewhat like functions in MATLAB).  So when you are developing new code, it may be better to use a simple R script rather than R Markdown.  Alternatively,  you can execute individual lines or sections of code within R Markdown by highlighting them and then *Run Selected Lines*.  Here the purpose is to illustrate examples, and R Markdown does this well.
+
+
+### AIS data preprocessing in advance of this script
+
+The primary load script, AIS_Primary_Load.R, processes a series of monthly AIS data files from the USCG, which were provided in csv format.  The raw 5-minute summaries in the csv files contain many records over land, a small proportion of exact or inexact duplicate records, and more variables than we need to carry along in analysis.  Removal of data over land using a polygon mask is a slow process, so the primary load script processes a series of monthly files to handle this slow and necessary intial task.  The result is an RData file (or a series of monthly RData files) that can be efficiently loaded for all subsequent processing and analysis.
+
+
+### Load libraries for this processing and analysis
+
+This processing uses libraries that enable effective and efficient QC and representation of the AIS data.  If you want to see the details of the libraries and messages generated during load, just remove the message=FALSE specification for this code chunk.
+
+```{r libraries, message=FALSE}
+  library(tidyverse)
+  library(lubridate)
+  library(pracma)
+```
+
+
+### Load data
+
+So, let's first load the data file that resulted from AIS_Primary_Load.R.
+```{r load data}
+# load("AISdata_202001_202003.RData")
+load("AISdata_201901_201907.RData")
+```
+
+### Check AIS data temporal coverage
+
+One of the first questions to answer is whether the AIS data record has gaps.  We can evaluate this by (1) counting the number of days in the time series that have records, and (2) plotting the number of records per day -- to identify whether any days have an unexpectedly low number of records.
+
+
+```{r daily record count}
+
+# get daily record counts
+C$time <- as.POSIXct(C$PERIOD)
+C$YMD <- strftime(C$time, format="%Y/%m/%d")
+D <- C %>% group_by(YMD) %>% summarise(count=n())
+D$time <- as.POSIXct(D$YMD)
+
+# plot daily counts
+p0 <- ggplot() + 
+  geom_point(data=D, aes(x=time, y=count)) +
+  theme(axis.title.x=element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ggtitle(paste(length(D$time),"days of data in time series")) + 
+  ylab("Number of records per day")
+
+p0
+```
+
+
+### Overview of monthly record counts
+
+Another useful temporal overview is a bar chart showing the total number of records per month.  Optionally, bars can be grouped and color coded by SHIP_AND_CARGO_TYPE from the AIS records.  For monthly summaries, we first need a year/month time variable for grouping.
+
+```{r}
+C$YM <- strftime(C$time, format="%Y/%m")
+```
+
+We can use summarise to group the data and store it in a new variable for further analysis.  For example:
+
+```{r}
+CM <- C %>% group_by(YM) %>% summarise(count=n())
+```
+
+
+However, a single plot command can produce the overview plot without first creating a new variable by grouping.
+
+```{r temporal and categorical overview}
+p1 <- ggplot(C, aes(YM)) + geom_bar(aes(fill = SHIP_AND_CARGO_TYPE)) +
+  theme(axis.title.x=element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ylab("Number of records")
+  
+p1
+```
+
+For now we'll leave the **many** SHIP_AND_CARGO_TYPE categories, as provided by the USCG.  However, after a bit more QC we ultimately want to translate the many categories into fewer that make sense for analysis and interpretation.
+
+See: <https://www.navcen.uscg.gov/?pageName=AISMessagesAStatic#TypeOfShip>
+
+
